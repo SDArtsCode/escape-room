@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/escroomLIGHT_ONN.wav-278f89ef907aec3f6fd9ee68d7f28e8b.sample"
+
+[deps]
+
+source_file="res://audio/escroomLIGHT_ONN.wav"
+dest_files=[ "res://.import/escroomLIGHT_ONN.wav-278f89ef907aec3f6fd9ee68d7f28e8b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

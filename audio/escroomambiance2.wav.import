@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/escroomambiance2.wav-0bd84c7df5d096b5a8d62c96ba654da5.sample"
+
+[deps]
+
+source_file="res://audio/escroomambiance2.wav"
+dest_files=[ "res://.import/escroomambiance2.wav-0bd84c7df5d096b5a8d62c96ba654da5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

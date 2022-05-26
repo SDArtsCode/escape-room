@@ -1,0 +1,54 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://audio/escroomlighthummmloop3.wav" type="AudioStream" id=1]
+[ext_resource path="res://audio/escroomambiance1.wav" type="AudioStream" id=2]
+[ext_resource path="res://audio/escroomlighthummm3.wav" type="AudioStream" id=3]
+[ext_resource path="res://audio/escroomambiance3.wav" type="AudioStream" id=4]
+[ext_resource path="res://audio/escroomambiance2.wav" type="AudioStream" id=5]
+[ext_resource path="res://audio/escroomambiance4.wav" type="AudioStream" id=6]
+[ext_resource path="res://audio/escroomairyloop4.wav" type="AudioStream" id=7]
+[ext_resource path="res://audio/escroomambiance5.wav" type="AudioStream" id=8]
+[ext_resource path="res://audio/escroomambiance6.wav" type="AudioStream" id=9]
+[ext_resource path="res://audio/escroomairy4.wav" type="AudioStream" id=10]
+[ext_resource path="res://audio_controller.gd" type="Script" id=11]
+
+[node name="AMBIANCE" type="Node2D"]
+script = ExtResource( 11 )
+
+[node name="airy_start" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+
+[node name="airy_loop" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="light_start" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -7.866
+
+[node name="light_loop" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -7.866
+
+[node name="cavesound1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -17.866
+
+[node name="cavesound2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -17.866
+
+[node name="cavesound3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -10.0
+
+[node name="cavesound4" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -10.0
+
+[node name="cavesound5" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = -17.866
+
+[node name="cavesound6" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -10.0

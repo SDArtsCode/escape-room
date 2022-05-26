@@ -1,0 +1,71 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Player.gd" type="Script" id=2]
+[ext_resource path="res://audio/escroompickup.wav" type="AudioStream" id=3]
+[ext_resource path="res://Light_Cone.png" type="Texture" id=4]
+[ext_resource path="res://hand.gd" type="Script" id=5]
+[ext_resource path="res://camera_controller.gd" type="Script" id=6]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 32, 34 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 19, 23 )
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Light2D
+
+
+	
+"
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_vertical_guides_": [ -147.0 ]
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 1, -1 )
+shape = SubResource( 2 )
+
+[node name="Item_Detector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_Detector"]
+shape = SubResource( 3 )
+
+[node name="pickup" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 36.0652, 34.4707 )
+scale = Vector2( 0.247, 0.222393 )
+texture = ExtResource( 1 )
+offset = Vector2( 0, -143 )
+script = ExtResource( 5 )
+
+[node name="Light2D" type="Light2D" parent="Sprite"]
+position = Vector2( 435.549, -410.707 )
+scale = Vector2( 2.02429, 2.24827 )
+texture = ExtResource( 4 )
+offset = Vector2( 196.65, 112.723 )
+shadow_enabled = true
+script = SubResource( 4 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 2, 2 )
+script = ExtResource( 6 )

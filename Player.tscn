@@ -1,0 +1,195 @@
+[gd_scene load_steps=39 format=2]
+
+[ext_resource path="res://Player.gd" type="Script" id=2]
+[ext_resource path="res://audio/escroompickup.wav" type="AudioStream" id=3]
+[ext_resource path="res://Light_Cone2.0.png" type="Texture" id=4]
+[ext_resource path="res://Light_Circle.png" type="Texture" id=5]
+[ext_resource path="res://camera_controller.gd" type="Script" id=6]
+[ext_resource path="res://ItemPivot.gd" type="Script" id=7]
+[ext_resource path="res://art/playeranim/escape room player Green idle sprite sheet.png" type="Texture" id=8]
+[ext_resource path="res://audio/footsteps/escroomsfx_foot1.wav" type="AudioStream" id=9]
+[ext_resource path="res://audio/footsteps/escroomsfx_foot2.wav" type="AudioStream" id=10]
+[ext_resource path="res://audio/footsteps/escroomsfx_foot4.wav" type="AudioStream" id=11]
+[ext_resource path="res://art/playeranim/escape room player Green walk left and right 8.png" type="Texture" id=12]
+[ext_resource path="res://audio/footsteps/escroomsfx_foot5.wav" type="AudioStream" id=13]
+[ext_resource path="res://audio/footsteps/escroomsfx_foot6.wav" type="AudioStream" id=14]
+[ext_resource path="res://audio/escroomLIGHT_ONN.wav" type="AudioStream" id=15]
+[ext_resource path="res://audio/escroomLIGHT_OFF.wav" type="AudioStream" id=16]
+[ext_resource path="res://notepad.tscn" type="PackedScene" id=17]
+[ext_resource path="res://art/playeranim/escape room player Green walk left and right 6.png" type="Texture" id=18]
+[ext_resource path="res://art/playeranim/escape room player Green walk left and right 3.png" type="Texture" id=19]
+[ext_resource path="res://art/playeranim/escape room player Green walk left and right 1.png" type="Texture" id=20]
+[ext_resource path="res://art/playeranim/escape room player Green walk left and right 4.png" type="Texture" id=21]
+[ext_resource path="res://art/playeranim/escape room player Green walk left and right 2.png" type="Texture" id=22]
+[ext_resource path="res://art/playeranim/escape room player Green walk left and right 5.png" type="Texture" id=23]
+[ext_resource path="res://art/playeranim/escape room player Green walk left and right 7.png" type="Texture" id=24]
+[ext_resource path="res://art/flashlight/flashlight 7.png" type="Texture" id=25]
+[ext_resource path="res://art/flashlight/flashlight 2.png" type="Texture" id=26]
+[ext_resource path="res://art/flashlight/flashlight 1.png" type="Texture" id=27]
+[ext_resource path="res://art/flashlight/flashlight 4.png" type="Texture" id=28]
+[ext_resource path="res://art/flashlight/flashlight 3.png" type="Texture" id=29]
+[ext_resource path="res://art/flashlight/flashlight 6.png" type="Texture" id=30]
+[ext_resource path="res://art/flashlight/flashlight 8.png" type="Texture" id=31]
+[ext_resource path="res://art/flashlight/flashlight 5.png" type="Texture" id=32]
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 8 )
+region = Rect2( 50, 0, 50, 50 )
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ SubResource( 5 ), SubResource( 6 ) ],
+"loop": true,
+"name": "idle",
+"speed": 0.75
+}, {
+"frames": [ ExtResource( 21 ), ExtResource( 23 ), ExtResource( 18 ), ExtResource( 24 ), ExtResource( 12 ), ExtResource( 20 ), ExtResource( 22 ), ExtResource( 19 ) ],
+"loop": true,
+"name": "walkleft",
+"speed": 8.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 20.5, 5.936 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 17, 25.5 )
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Light2D
+
+onready var player = get_node(\"../../\")
+
+const FLICKER_INTENSITY = 0.05
+const INT_DELTA = 0.019
+const INIT_NRG = 1.0
+var up = false
+var nrg = INIT_NRG
+var on = false
+
+onready var onoff = [$on, $off]
+
+func _process(delta):
+	if up:
+		nrg += INT_DELTA
+	else:
+		nrg -= INT_DELTA
+		
+	if FLICKER_INTENSITY + INIT_NRG < nrg or INIT_NRG - FLICKER_INTENSITY > nrg:
+		up = not up
+	if on:
+		energy = nrg
+	else:
+		energy = 0
+	
+
+
+func _input(event):
+	if event.is_action_pressed(\"use_item\") and player.item_in_hand == \"Flashlight\":
+		on = true
+		onoff[0].play()
+		
+	if event.is_action_released(\"use_item\") and player.item_in_hand == \"Flashlight\":
+		on = false
+		onoff[1].play()
+"
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ ExtResource( 28 ), ExtResource( 29 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 31 ), ExtResource( 25 ), ExtResource( 30 ), ExtResource( 32 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_vertical_guides_": [ -147.0 ]
+}
+
+[node name="char" type="AnimatedSprite" parent="."]
+scale = Vector2( 2, 2 )
+frames = SubResource( 1 )
+animation = "walkleft"
+frame = 5
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 35.936 )
+shape = SubResource( 2 )
+
+[node name="Item_Detector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_Detector"]
+position = Vector2( -3, 3.5 )
+shape = SubResource( 3 )
+
+[node name="pickup" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+script = ExtResource( 6 )
+
+[node name="Node2D" parent="Camera2D" instance=ExtResource( 17 )]
+modulate = Color( 1, 1, 1, 0 )
+
+[node name="PlayerLight" type="Light2D" parent="."]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+color = Color( 1, 1, 1, 0.607843 )
+energy = 0.75
+
+[node name="ItemPivot" type="Sprite" parent="."]
+script = ExtResource( 7 )
+
+[node name="Flashlight" type="Light2D" parent="ItemPivot"]
+position = Vector2( 37, 3 )
+scale = Vector2( 0.7, 1 )
+texture = ExtResource( 4 )
+offset = Vector2( 449.507, -5.277 )
+energy = 1.2
+shadow_enabled = true
+script = SubResource( 4 )
+
+[node name="on" type="AudioStreamPlayer" parent="ItemPivot/Flashlight"]
+stream = ExtResource( 15 )
+volume_db = 1.683
+
+[node name="off" type="AudioStreamPlayer" parent="ItemPivot/Flashlight"]
+stream = ExtResource( 16 )
+volume_db = 1.683
+
+[node name="Item" type="AnimatedSprite" parent="ItemPivot"]
+position = Vector2( 22, 0 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 7 )
+
+[node name="footsteps1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -12.898
+
+[node name="footsteps2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+volume_db = -12.898
+
+[node name="footsteps3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = -12.898
+
+[node name="footsteps4" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+volume_db = -12.898
+
+[node name="footsteps5" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = -12.898
+
+[node name="footsteps6" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+volume_db = -12.898

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/escroomsfx_foot2.wav-0f38e051dc2481131f7c482c7b1cb9f8.sample"
+
+[deps]
+
+source_file="res://audio/footsteps/escroomsfx_foot2.wav"
+dest_files=[ "res://.import/escroomsfx_foot2.wav-0f38e051dc2481131f7c482c7b1cb9f8.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
