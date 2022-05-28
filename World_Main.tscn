@@ -347,7 +347,7 @@ tile_data = PoolIntArray( 786437, 0, 0, 786438, 0, 0, 786439, 0, 0, 786440, 0, 0
 position = Vector2( 79.636, 105.636 )
 
 [node name="char" parent="Player" index="0"]
-frame = 0
+frame = 2
 
 [node name="pickup" parent="Player" index="3"]
 volume_db = -10.0
@@ -386,7 +386,7 @@ modulate = Color( 0.129412, 0.321569, 0.309804, 0.0509804 )
 position = Vector2( -307, -505.293 )
 scale = Vector2( 5, 5 )
 frames = SubResource( 8 )
-frame = 133
+frame = 214
 playing = true
 script = ExtResource( 10 )
 
