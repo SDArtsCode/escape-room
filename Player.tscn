@@ -115,8 +115,8 @@ __meta__ = {
 [node name="char" type="AnimatedSprite" parent="."]
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-animation = "idle"
-frame = 1
+animation = "walkleft"
+frame = 6
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
