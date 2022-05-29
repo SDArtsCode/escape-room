@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Art.png-291d5788e1eda2ce71994dc5342386f0.stex"
+path="res://.import/Perlin.png-4ca79a853fe3d4b20011031cad5ce64f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art.png"
-dest_files=[ "res://.import/Art.png-291d5788e1eda2ce71994dc5342386f0.stex" ]
+source_file="res://Shaders/Tex/Perlin.png"
+dest_files=[ "res://.import/Perlin.png-4ca79a853fe3d4b20011031cad5ce64f.stex" ]
 
 [params]
 
