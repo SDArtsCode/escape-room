@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://audio/escroompickup.wav" type="AudioStream" id=3]
@@ -59,6 +59,35 @@ extents = Vector2( 20.5, 5.936 )
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 17, 25.5 )
 
+[sub_resource type="Shader" id=10]
+code = "shader_type canvas_item;
+
+uniform int megapixel_size_px: hint_range(1, 8) = 3;
+
+void fragment() {
+    // Get the actual screen resolution.
+    vec2 screen_resolution = vec2(textureSize(SCREEN_TEXTURE, 0));
+
+    // Get the size of the megapixel in UV coordinates.
+    vec2 megapixel_size_uv = float(megapixel_size_px) / screen_resolution;
+
+    // Determine which megapixel the current fragment resides in.
+    vec2 current_megapixel = floor(FRAGCOORD.xy / float(megapixel_size_px));
+
+    // Determine the UV-coordinate of the bottem-left corner of the current megapixel.
+    vec2 current_megapixel_uv = (current_megapixel * float(megapixel_size_px)) / screen_resolution;
+
+    // Determine the UV-coordinate of the center of the current megapixel.
+    vec2 current_megapixel_center_uv = current_megapixel_uv + (megapixel_size_uv / 2.0);
+
+    // Use the color at the center of the megapixel as the final fragment color.
+    COLOR = textureLod(SCREEN_TEXTURE, current_megapixel_center_uv, 0.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = SubResource( 10 )
+shader_param/megapixel_size_px = 3
+
 [sub_resource type="GDScript" id=4]
 script/source = "extends Light2D
 
@@ -116,7 +145,7 @@ __meta__ = {
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
 animation = "walkleft"
-frame = 5
+frame = 7
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -133,6 +162,7 @@ shape = SubResource( 3 )
 stream = ExtResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
+material = SubResource( 11 )
 current = true
 script = ExtResource( 6 )
 
