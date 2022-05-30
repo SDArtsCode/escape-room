@@ -90,12 +90,12 @@ void fragment()
 
 [sub_resource type="ShaderMaterial" id=12]
 shader = SubResource( 11 )
-shader_param/shiftSpeed = 0.008
+shader_param/shiftSpeed = 0.006
 shader_param/alpha = 1.0
-shader_param/scale = 1.0
+shader_param/scale = 0.5
 shader_param/power = 1.75
 shader_param/clamp_min = 0.03
-shader_param/pixelate = 250.0
+shader_param/pixelate = 500.0
 shader_param/tex_noise = ExtResource( 259 )
 
 [sub_resource type="Gradient" id=9]
@@ -125,10 +125,7 @@ tile_data = PoolIntArray( 786437, 0, 0, 786438, 0, 0, 786439, 0, 0, 786440, 0, 0
 [node name="Player1" parent="." instance=ExtResource( 1 )]
 position = Vector2( 79.636, 105.636 )
 
-[node name="char" parent="Player1" index="0"]
-frame = 5
-
-[node name="pickup" parent="Player1" index="3"]
+[node name="pickup" parent="Player" index="3"]
 volume_db = -10.0
 
 [node name="Camera2D" parent="Player1" index="4"]
@@ -177,10 +174,10 @@ playback_speed = 0.5
 script = ExtResource( 257 )
 
 [node name="NoiseShader" type="Sprite" parent="."]
-modulate = Color( 0.129412, 0.321569, 0.309804, 0.0509804 )
+modulate = Color( 0.129412, 0.321569, 0.309804, 0.0470588 )
 material = SubResource( 12 )
 position = Vector2( 255, 62.7071 )
-scale = Vector2( 3, 3 )
+scale = Vector2( 6, 6 )
 texture = ExtResource( 258 )
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]

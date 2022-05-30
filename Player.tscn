@@ -168,10 +168,9 @@ script = ExtResource( 6 )
 modulate = Color( 1, 1, 1, 0 )
 
 [node name="PlayerLight" type="Light2D" parent="."]
-scale = Vector2( 2, 2 )
+scale = Vector2( 3, 3 )
 texture = ExtResource( 5 )
 color = Color( 1, 1, 1, 0.607843 )
-energy = 0.75
 
 [node name="ItemPivot" type="Sprite" parent="."]
 script = ExtResource( 7 )
