@@ -35,7 +35,6 @@ var flashlight_in_hand = false
 var timer = 0.0
 var sound = 0
 
-
 var velocity = Vector2.ZERO
 
 func _ready() -> void:
@@ -43,8 +42,9 @@ func _ready() -> void:
 
 func _process(delta):
 	for body in $Item_Detector.get_overlapping_areas():
-		body.indicator.show()
-		body.timer = 0.1
+		if body.name.begins_with("Item"):
+			body.indicator.show()
+			body.timer = 0.1
 	if dir_x != 0 or dir_y != 0:
 		chr.animation = "walkleft"
 		timer += delta
