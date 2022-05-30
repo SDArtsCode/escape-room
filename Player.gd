@@ -42,11 +42,13 @@ func _ready() -> void:
 	chr.playing = true
 
 func _process(delta):
+	for body in $Item_Detector.get_overlapping_areas():
+		body.indicator.show()
+		body.timer = 0.1
 	if dir_x != 0 or dir_y != 0:
 		chr.animation = "walkleft"
 		timer += delta
 		if timer >= WALK_SOUND_GAP:
-			print("ploop")
 			timer = 0.0
 			footsteps[sound][randi()%2].play()
 			sound += 1
