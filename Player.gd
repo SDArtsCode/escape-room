@@ -24,6 +24,8 @@ export (float, 0, 1.0) var acceleration = 0.4
 
 onready var Item_respawn = preload("res://Item1.tscn")
 
+onready var global = get_node("../")
+onready var camera = $Camera2D
 onready var pickup = $pickup
 onready var footsteps = [[$footsteps1, $footsteps2], [$footsteps3, $footsteps4], [$footsteps5, $footsteps6]]
 onready var chr = $char
@@ -32,6 +34,8 @@ var item_in_hand = ""
 var item_in_backpack = ""
 var flashlight_in_hand = false
 
+var controller = false
+
 var timer = 0.0
 var sound = 0
 
@@ -39,6 +43,9 @@ var velocity = Vector2.ZERO
 
 func _ready() -> void:
 	chr.playing = true
+	controller = global.player_num == int(name[6])
+	if controller:
+		camera.current = true
 
 func _process(delta):
 	for body in $Item_Detector.get_overlapping_areas():
@@ -72,21 +79,22 @@ func _process(delta):
 		
 
 func get_input():
-	dir_x = 0
-	dir_y = 0
-	if walk:
-		if Input.is_action_pressed("ui_right"):
-			dir_x += 1
-			chr.scale.x = 2
-		if Input.is_action_pressed("ui_left"):
-			dir_x -= 1
-			chr.scale.x = -2
-		if Input.is_action_pressed("ui_up"):
-			dir_y -= 1
-		if Input.is_action_pressed("ui_down"):
-			dir_y += 1
-		
-		move_and_slide(Vector2(dir_x*speed, dir_y*speed))
+	if controller:
+		dir_x = 0
+		dir_y = 0
+		if walk:
+			if Input.is_action_pressed("ui_right"):
+				dir_x += 1
+				chr.scale.x = 2
+			if Input.is_action_pressed("ui_left"):
+				dir_x -= 1
+				chr.scale.x = -2
+			if Input.is_action_pressed("ui_up"):
+				dir_y -= 1
+			if Input.is_action_pressed("ui_down"):
+				dir_y += 1
+			
+			move_and_slide(Vector2(dir_x*speed, dir_y*speed))
 		
 		
 		

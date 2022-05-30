@@ -29,6 +29,7 @@ window/dpi/allow_hidpi=true
 [global]
 
 background=false
+single=false
 
 [importer_defaults]
 
