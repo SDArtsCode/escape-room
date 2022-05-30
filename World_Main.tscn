@@ -397,6 +397,7 @@ tile_data = PoolIntArray( 786437, 0, 0, 786438, 0, 0, 786439, 0, 0, 786440, 0, 0
 position = Vector2( 79.636, 105.636 )
 
 [node name="char" parent="Player" index="0"]
+frame = 6
 playing = true
 
 [node name="pickup" parent="Player" index="3"]
@@ -436,10 +437,10 @@ script = ExtResource( 257 )
 [node name="NoiseSprite" type="AnimatedSprite" parent="."]
 visible = false
 modulate = Color( 0.129412, 0.321569, 0.309804, 0.0509804 )
-position = Vector2( 1022.36, 414.45 )
+position = Vector2( 784.072, -48.5301 )
 scale = Vector2( 5, 5 )
 frames = SubResource( 8 )
-frame = 236
+frame = 216
 playing = true
 script = ExtResource( 10 )
 
