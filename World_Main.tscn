@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Item1.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://art/Art.png" type="Texture" id=4]
 [ext_resource path="res://audio_controller.tscn" type="PackedScene" id=5]
 [ext_resource path="res://main.gd" type="Script" id=6]
+[ext_resource path="res://audio/footsteps/escroomsfx_foot3redo.wav" type="AudioStream" id=7]
 [ext_resource path="res://bganim.gd" type="Script" id=257]
 [ext_resource path="res://noise.png" type="Texture" id=258]
 [ext_resource path="res://Shaders/Tex/noiseTexture2.png" type="Texture" id=259]
@@ -142,6 +143,9 @@ volume_db = -10.0
 [node name="Camera2D" parent="Player2" index="4"]
 current = false
 
+[node name="footsteps3" parent="Player2" index="9"]
+stream = ExtResource( 7 )
+
 [node name="Item1" parent="." groups=["ITEMS"] instance=ExtResource( 2 )]
 position = Vector2( 196.65, 112.723 )
 collision_layer = 2
@@ -173,7 +177,7 @@ playback_speed = 0.5
 script = ExtResource( 257 )
 
 [node name="NoiseShader" type="Sprite" parent="."]
-modulate = Color( 0.129412, 0.321569, 0.309804, 0.0470588 )
+modulate = Color( 0.129412, 0.321569, 0.309804, 0.0235294 )
 material = SubResource( 12 )
 position = Vector2( 255, 62.7071 )
 scale = Vector2( 6, 6 )

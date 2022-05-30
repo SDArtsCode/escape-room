@@ -49,7 +49,7 @@ func _ready() -> void:
 
 func _process(delta):
 	for body in $Item_Detector.get_overlapping_areas():
-		if body.name.begins_with("Item"):
+		if body.name.begins_with("Item") and body.name != "Item_Detector":
 			body.indicator.show()
 			body.timer = 0.1
 	if dir_x != 0 or dir_y != 0:

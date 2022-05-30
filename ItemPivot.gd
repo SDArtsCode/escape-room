@@ -9,7 +9,6 @@ func _process(delta):
 	item.rotation = -atan2((player.position-get_global_mouse_position()).x, -(player.position-get_global_mouse_position()).y)-PI/2
 	
 	var rot = atan2((player.position-get_global_mouse_position()).x, -(player.position-get_global_mouse_position()).y)/(PI/180)
-	print(rot)
 	var angles = [-90+12.5 > rot and rot >= -90-12.5,
 				-135+12.5 > rot and rot >= -135-12.5,
 				-180+12.5 > rot or 180-12.5 < rot,
