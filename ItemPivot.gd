@@ -18,6 +18,7 @@ func _process(delta):
 				45+12.5 > rot and rot >= 45-12.5,
 				0+12.5 > rot and rot >= 0-12.5,
 				-45+12.5 > rot and rot >= -45-12.5]
+	
 	var counter = 0
 	for angle in angles:
 		if angle:
