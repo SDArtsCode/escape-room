@@ -39,7 +39,7 @@ var sound = 0
 var velocity = Vector2.ZERO
 
 func _ready() -> void:
-	pass
+	chr.playing = true
 
 func _process(delta):
 	if dir_x != 0 or dir_y != 0:
