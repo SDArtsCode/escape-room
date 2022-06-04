@@ -1,11 +1,13 @@
 extends KinematicBody2D
 
+export var plr: int
 const WALK_SPEED = 60
 const WALK_SOUND_GAP = 0.5
 
 var dir_x = 0
 var dir_y = 0
 var walk: bool = true
+var walking = false
 
 
 # Limp controls
@@ -25,8 +27,9 @@ export (float, 0, 1.0) var acceleration = 0.4
 onready var Item_respawn = preload("res://Item1.tscn")
 
 onready var global = get_node("../")
+onready var item_pivot = $ItemPivot
 onready var camera = $Camera2D
-onready var pickup = $pickup
+onready var pickup_sfx = $pickup
 onready var footsteps = [[$footsteps1, $footsteps2], [$footsteps3, $footsteps4], [$footsteps5, $footsteps6]]
 onready var chr = $char
 var speed = WALK_SPEED
@@ -36,18 +39,67 @@ var flashlight_in_hand = false
 
 var controller = false
 
+# useless vars
 var timer = 0.0
 var sound = 0
 
 var velocity = Vector2.ZERO
 
+
+#networing vars
+const MAX_NETWORK_REACH = 500.0
+var transrot = 0.0
+var on: bool
+var pickup: String = ""
+var done = [false, false]
+var dropped: bool = false
+var net_timer = 0.0
+
 func _ready() -> void:
 	chr.playing = true
-	controller = global.player_num == int(name[6])
+	controller = Networking.player_num == plr
 	if controller:
 		camera.current = true
 
+#func sortdist(a, b):
+#	if a.global_position.distance_to(position) < b.global_position.distance_to(position):
+#		return true
+#	return false
+
+
+
 func _process(delta):
+#	print(plr, ": ", pickup)
+	if controller:
+		transrot = item_pivot.rotation
+		if done[1]:
+			net_timer += delta
+			if net_timer >= 0.5:
+				done[1] = false
+				net_timer = 0 
+	if not controller and pickup != "" and not done[0]:
+		done[0] = true
+#		fix bug with this, enables nearest item 
+#		for body in get_tree().get_nodes_in_group("ITEMS").sort_custom(self, "sortdist"):
+		for body in get_tree().get_nodes_in_group("ITEMS"):
+			if body.item_id == pickup and position.distance_to(body.global_position) <= MAX_NETWORK_REACH:
+				body.queue_free()
+				pickup_sfx.play()
+				break
+	elif not controller and done[0] and pickup == "":
+		done[0] = false
+	
+#	if not controller and dropped and not done[1]:
+#		done[1] = true
+#		var respawn = Item_respawn.instance()
+#		respawn.add_to_group("ITEMS")
+#		respawn.item_id = item_in_hand
+#		respawn.plr = plr
+#		get_parent().add_child(respawn)
+#
+#	elif not controller and done[1] and not dropped:
+#		done[1] = false
+		
 	for body in $Item_Detector.get_overlapping_areas():
 		if body.name.begins_with("Item") and body.name != "Item_Detector":
 			body.indicator.show()
@@ -62,6 +114,7 @@ func _process(delta):
 			if sound >= 3:
 				sound = 0
 	else:
+		pass
 		chr.animation = "idle"
 		
 		
@@ -79,22 +132,21 @@ func _process(delta):
 		
 
 func get_input():
-	if controller:
-		dir_x = 0
-		dir_y = 0
-		if walk:
-			if Input.is_action_pressed("ui_right"):
-				dir_x += 1
-				chr.scale.x = 2
-			if Input.is_action_pressed("ui_left"):
-				dir_x -= 1
-				chr.scale.x = -2
-			if Input.is_action_pressed("ui_up"):
-				dir_y -= 1
-			if Input.is_action_pressed("ui_down"):
-				dir_y += 1
-			
-			move_and_slide(Vector2(dir_x*speed, dir_y*speed))
+	dir_x = 0
+	dir_y = 0
+	if walk:
+		if Input.is_action_pressed("ui_right"):
+			dir_x += 1
+			chr.scale.x = 2
+		if Input.is_action_pressed("ui_left"):
+			dir_x -= 1
+			chr.scale.x = -2
+		if Input.is_action_pressed("ui_up"):
+			dir_y -= 1
+		if Input.is_action_pressed("ui_down"):
+			dir_y += 1
+		
+		move_and_slide(Vector2(dir_x*speed, dir_y*speed))
 		
 		
 		
@@ -117,39 +169,42 @@ func get_input():
 
 
 func item_pickup():
-	
-	
 	if Input.is_action_just_pressed("interact"):
-		
-			for body in $Item_Detector.get_overlapping_areas():
-				if body.is_in_group("ITEMS") and item_in_hand == "":
-					print (str(body.item_id) + " is in hand")
-					pickup.play()
-					item_in_hand = body.item_id
-					body.queue_free()
-					
-				elif body.is_in_group("ITEMS") and not(item_in_hand == ""):
-					print(str(body.item_id) + " is in backpack")
-					pickup.play()
-					item_in_backpack = body.item_id
-					body.queue_free()
+		pickup = ""
+	if Input.is_action_just_released("interact"):
+		for body in $Item_Detector.get_overlapping_areas():
+			if body.is_in_group("ITEMS") and item_in_hand == "":
+				print (str(body.item_id) + " is in hand")
+				pickup_sfx.play()
+				pickup = body.item_id
+				item_in_hand = body.item_id
+				body.queue_free()
+				
+			elif body.is_in_group("ITEMS") and not(item_in_hand == ""):
+				print(str(body.item_id) + " is in backpack")
+				pickup_sfx.play()
+				pickup = body.item_id
+				item_in_backpack = body.item_id
+				body.queue_free()
 					
 					
 func item_drop():
+	if Input.is_action_just_pressed("Drop"):
+		print("icyu")
 	if Input.is_action_just_pressed("Drop") and not(item_in_hand == "") and item_in_backpack == "":
-					
-			var player = get_node("Item_Detector")
-			var respawn = Item_respawn.instance()
-		
-			respawn.add_to_group("ITEMS")
-			respawn.item_id = item_in_hand
-			get_parent().add_child(respawn)		
-			respawn.global_position = self.global_position	
-			respawn.direction = get_local_mouse_position().normalized()
-		
-			print(str(item_in_hand) + " is dropped")
-		
-			item_in_hand = ""
+		var player = get_node("Item_Detector")
+		var respawn = Item_respawn.instance()
+		respawn.add_to_group("ITEMS")
+		respawn.item_id = item_in_hand
+		respawn.plr = plr
+		get_parent().add_child(respawn)
+		dropped = true
+		respawn.global_position = self.global_position
+		respawn.direction = get_local_mouse_position().normalized()
+	
+		print(str(item_in_hand) + " is dropped")
+	
+		item_in_hand = ""
 		
 	elif Input.is_action_just_pressed("Drop") and not(item_in_hand == "") and not(item_in_backpack == ""):
 			
@@ -158,8 +213,10 @@ func item_drop():
 		
 		respawn.add_to_group("ITEMS")
 		respawn.item_id = item_in_hand
-		get_parent().add_child(respawn)		
-		respawn.global_position = self.global_position	
+		respawn.plr = plr
+		get_parent().add_child(respawn)
+		dropped = true
+		respawn.global_position = self.global_position
 		respawn.direction = get_local_mouse_position().normalized()
 		print(str(item_in_hand) + " is dropped")
 		
@@ -203,10 +260,11 @@ func handle_flashlight():
 		
 		
 func _physics_process(delta):
-	get_input()
-	item_drop()
-	item_pickup()
-	item_switch()
+	if controller:
+		get_input()
+		item_drop()
+		item_pickup()
+		item_switch()
 	check_flashlight()
 	handle_flashlight()
 	velocity = move_and_slide(velocity)

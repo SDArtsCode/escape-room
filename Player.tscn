@@ -1,5 +1,6 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=42 format=2]
 
+[ext_resource path="res://addons/easy_networking/network_syncer.gd" type="Script" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://audio/escroompickup.wav" type="AudioStream" id=3]
 [ext_resource path="res://Light_Cone2.0.png" type="Texture" id=4]
@@ -103,6 +104,13 @@ var on = false
 onready var onoff = [$on, $off]
 
 func _process(delta):
+	if not player.controller:
+		if on != player.on:
+			if not on and player.on:
+				onoff[0].play()
+			elif on and not player.on:
+				onoff[1].play()
+		on = player.on
 	if up:
 		nrg += INT_DELTA
 	else:
@@ -118,13 +126,16 @@ func _process(delta):
 
 
 func _input(event):
-	if event.is_action_pressed(\"use_item\") and player.item_in_hand == \"Flashlight\":
-		on = true
-		onoff[0].play()
-		
-	if event.is_action_released(\"use_item\") and player.item_in_hand == \"Flashlight\":
-		on = false
-		onoff[1].play()
+	if player.controller:
+		if event.is_action_pressed(\"use_item\") and player.item_in_hand == \"Flashlight\":
+			on = true
+			player.on = true
+#			onoff[0].play()
+			
+		if event.is_action_released(\"use_item\") and player.item_in_hand == \"Flashlight\":
+			on = false
+			player.on = false
+#			onoff[1].play()
 "
 
 [sub_resource type="SpriteFrames" id=7]
@@ -161,7 +172,6 @@ stream = ExtResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 material = SubResource( 11 )
-current = true
 script = ExtResource( 6 )
 
 [node name="Node2D" parent="Camera2D" instance=ExtResource( 17 )]
@@ -220,3 +230,9 @@ volume_db = -12.898
 [node name="footsteps6" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )
 volume_db = -12.898
+
+[node name="syncer" type="Node" parent="."]
+process_priority = -1
+script = ExtResource( 1 )
+synced_properties = PoolStringArray( "transform", "dir_x", "item_in_hand", "item_in_backpack", "transrot", "pickup" )
+synced_booleans = PoolStringArray( "on", "dropped" )

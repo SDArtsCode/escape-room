@@ -11,12 +11,13 @@ config_version=4
 [application]
 
 config/name="Testing_Item_Pickup"
-run/main_scene="res://World_Main.tscn"
+run/main_scene="res://addons/easy_networking/Lobby.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Item="*res://Item.gd"
+Networking="*res://addons/easy_networking/networking.gd"
 
 [display]
 

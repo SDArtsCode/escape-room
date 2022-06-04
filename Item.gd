@@ -3,6 +3,7 @@ extends Area2D
 export var item_id = "default"
 var drop_speed = 170.0*1.25
 var direction = Vector2()
+var plr: int = 0
 var timer = 9999999999.0
 onready var indicator = $Indicator
 const DRAG = 184

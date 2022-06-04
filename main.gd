@@ -1,6 +1,7 @@
 extends Node2D
 
-var player_num = 1
+#onready var player = preload("res://Player.tscn")
 
 func _ready():
 	pass
+#	var _err = Networking.create_players(player, self)
